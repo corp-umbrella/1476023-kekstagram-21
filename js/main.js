@@ -67,7 +67,7 @@ const getComment = function () {
 
 const getComments = function () {
   let comments = [];
-  for (let i = 0; i < getRandomNumber(0, 10); i++) {
+  for (let i = 0; i <= getRandomNumber(0, AVATARS_AMOUNT); i++) {
     comments.push(getComment());
   }
   return comments;
@@ -92,23 +92,23 @@ const getPhotos = function () {
 
 const photosList = getPhotos();
 
-const body = document.querySelector('body');
-const picture = document.querySelector('#picture').content;
+const pictureList = document.querySelector('.pictures');
 
+const picture = document.querySelector('#picture').content;
 const pictureElement = picture.querySelector('.picture');
 
 for (var i = 0; i < PHOTOS_AMOUNT; i++) {
   const clonedElement = pictureElement.cloneNode(true);
 
   const pictureImage = clonedElement.querySelector('.picture__img');
-  const pictureDescription = clonedElement.querySelector('.picture__info');
+  // const pictureDescription = clonedElement.querySelector('.picture__info');
   const pictureComments = clonedElement.querySelector('.picture__comments');
   const pictureLikes = clonedElement.querySelector('.picture__likes');
 
   pictureImage.src = photosList[i].url;
   pictureImage.alt = photosList[i].description;
-  pictureComments.textContent = photosList[i].comments;
+  pictureComments.textContent = photosList[i].comments.length;
   pictureLikes.textContent = photosList[i].likes;
 
-  pictureElement.appendChild(clonedElement);
+  pictureList.appendChild(clonedElement);
 }
