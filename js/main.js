@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const PHOTOS_AMOUNT = 25;
 
@@ -12,15 +12,15 @@ const allLikes = {
 // Рандомизатор
 const getRandomNumber = function (min, max) {
   return min + Math.floor(Math.random() * (max - min));
-}
+};
 
 const getAvatarNumber = function () {
   return getRandomNumber(1, AVATARS_AMOUNT);
-}
+};
 
 const getLikesNumber = function () {
   return getRandomNumber(allLikes.min, allLikes.max);
-}
+};
 
 const getMessage = function () {
   const allMessages = [
@@ -32,7 +32,7 @@ const getMessage = function () {
     'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
   ];
   return allMessages[getRandomNumber(1, allMessages.length)];
-}
+};
 
 const getName = function () {
   const allNames = [
@@ -55,15 +55,15 @@ const getName = function () {
   ];
 
   return allNames[getRandomNumber(1, allNames.length)];
-}
+};
 
 const getComment = function () {
   return {
     avatar: `img/avatar-${getAvatarNumber()}.svg`,
     message: getMessage(),
     name: getName()
-  }
-}
+  };
+};
 
 const getComments = function () {
   let comments = [];
@@ -71,7 +71,7 @@ const getComments = function () {
     comments.push(getComment());
   }
   return comments;
-}
+};
 
 // Главная функция
 
@@ -79,16 +79,16 @@ const getPhotos = function () {
   let photos = [];
   for (let i = 1; i <= PHOTOS_AMOUNT; i++) {
     photos.push(
-      {
-        url: `photos/${i}.jpg`,
-        description: `Фото номер ${i}`,
-        likes: getLikesNumber(),
-        comments: getComments()
-      }
+        {
+          url: `photos/${i}.jpg`,
+          description: `Фото номер ${i}`,
+          likes: getLikesNumber(),
+          comments: getComments()
+        }
     );
   }
   return photos;
-}
+};
 
 const photosList = getPhotos();
 
