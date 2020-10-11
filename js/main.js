@@ -112,3 +112,53 @@ for (let i = 0; i < PHOTOS_AMOUNT; i++) {
 
   pictureList.appendChild(clonedElement);
 }
+
+// Приближённая фотография
+
+const mainPicture = document.querySelector(`.big-picture`);
+mainPicture.classList.remove(`hidden`);
+
+const mainPictureImg = mainPicture.querySelector(`.big-picture__img`);
+mainPictureImg.children.src = photosList[0].url;
+
+const mainPictureLikes = mainPicture.querySelector(`.likes-count`);
+mainPictureLikes.textContent = photosList[0].likes;
+
+const mainPictureComments = mainPicture.querySelector(`.comments-count`);
+mainPictureComments.textContent = photosList[0].comments.length;
+
+// Создание списка комментариев
+
+const commentList = document.querySelector(`.social__comments`);
+const comment = document.createElement(`li`);
+comment.classList.add(`social__comment`);
+commentList.appendChild(comment);
+
+const commentsAvatar = document.createElement(`img`);
+commentsAvatar.classList.add(`social__picture`);
+commentsAvatar.src = `img/avatar-${getAvatarNumber()}.svg`;
+commentsAvatar.alt = getName();
+const avatarWidth = 35;
+const avatarHeight = avatarWidth;
+commentsAvatar.width = avatarWidth;
+commentsAvatar.height = avatarHeight;
+comment.appendChild(commentsAvatar);
+
+const commentsText = document.createElement(`p`);
+commentsText.classList.add(`social__text`);
+commentsAvatar.textContent = getMessage();
+comment.appendChild(commentsText);
+
+
+const mainPictureDescription = mainPicture.querySelector(`.social__caption`);
+mainPictureDescription.textContent = photosList[0].description;
+
+
+const commentsCounter = document.querySelector(`.social__comment-count`);
+commentsCounter.classList.add(`hidden`);
+
+const commentsDownload = document.querySelector(`.comments-loader`);
+commentsDownload.classList.add(`hidden`);
+
+const mainBody = document.querySelector(`body`);
+mainBody.classList.add(`modal-open`);
