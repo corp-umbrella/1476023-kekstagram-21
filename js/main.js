@@ -79,12 +79,12 @@ const getPhotos = function () {
   let photos = [];
   for (let i = 1; i <= PHOTOS_AMOUNT; i++) {
     photos.push(
-        {
-          url: `photos/${i}.jpg`,
-          description: `Фото номер ${i}`,
-          likes: getLikesNumber(),
-          comments: getComments()
-        }
+      {
+        url: `photos/${i}.jpg`,
+        description: `Фото номер ${i}`,
+        likes: getLikesNumber(),
+        comments: getComments()
+      }
     );
   }
   return photos;
@@ -119,7 +119,7 @@ const mainPicture = document.querySelector(`.big-picture`);
 mainPicture.classList.remove(`hidden`);
 
 const mainPictureImg = mainPicture.querySelector(`.big-picture__img`);
-mainPictureImg.children.src = photosList[0].url;
+mainPictureImg.children[0].src = photosList[0].url;
 
 const mainPictureLikes = mainPicture.querySelector(`.likes-count`);
 mainPictureLikes.textContent = photosList[0].likes;
@@ -130,24 +130,28 @@ mainPictureComments.textContent = photosList[0].comments.length;
 // Создание списка комментариев
 
 const commentList = document.querySelector(`.social__comments`);
-const comment = document.createElement(`li`);
-comment.classList.add(`social__comment`);
-commentList.appendChild(comment);
+commentList.innerHTML = ``;
 
-const commentsAvatar = document.createElement(`img`);
-commentsAvatar.classList.add(`social__picture`);
-commentsAvatar.src = `img/avatar-${getAvatarNumber()}.svg`;
-commentsAvatar.alt = getName();
-const avatarWidth = 35;
-const avatarHeight = avatarWidth;
-commentsAvatar.width = avatarWidth;
-commentsAvatar.height = avatarHeight;
-comment.appendChild(commentsAvatar);
+for (let i = 0; i < photosList[0].comments.length; i++) {
+  const comment = document.createElement(`li`);
+  comment.classList.add(`social__comment`);
+  commentList.appendChild(comment);
 
-const commentsText = document.createElement(`p`);
-commentsText.classList.add(`social__text`);
-commentsAvatar.textContent = getMessage();
-comment.appendChild(commentsText);
+  const commentsAvatar = document.createElement(`img`);
+  commentsAvatar.classList.add(`social__picture`);
+  commentsAvatar.src = photosList[0].comments[i].avatar;
+  commentsAvatar.alt = photosList[0].comments[i].name;
+  const avatarWidth = 35;
+  const avatarHeight = avatarWidth;
+  commentsAvatar.width = avatarWidth;
+  commentsAvatar.height = avatarHeight;
+  comment.appendChild(commentsAvatar);
+
+  const commentsText = document.createElement(`p`);
+  commentsText.classList.add(`social__text`);
+  commentsText.textContent = photosList[0].comments[i].message;
+  comment.appendChild(commentsText);
+}
 
 
 const mainPictureDescription = mainPicture.querySelector(`.social__caption`);
