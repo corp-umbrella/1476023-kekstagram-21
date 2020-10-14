@@ -79,12 +79,12 @@ const getPhotos = function () {
   let photos = [];
   for (let i = 1; i <= PHOTOS_AMOUNT; i++) {
     photos.push(
-      {
-        url: `photos/${i}.jpg`,
-        description: `Фото номер ${i}`,
-        likes: getLikesNumber(),
-        comments: getComments()
-      }
+        {
+          url: `photos/${i}.jpg`,
+          description: `Фото номер ${i}`,
+          likes: getLikesNumber(),
+          comments: getComments()
+        }
     );
   }
   return photos;
