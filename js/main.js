@@ -166,3 +166,58 @@ commentsDownload.classList.add(`hidden`);
 
 const mainBody = document.querySelector(`body`);
 mainBody.classList.add(`modal-open`);
+
+// Задание 4
+
+// Обработчик на открытие и закрытие загрузки фото
+
+const uploadOpen = document.querySelector(`#upload-file`);
+const upload = document.querySelector(`.img-upload__overlay`);
+const uploadClose = upload.querySelector(`#upload-cancel`);
+
+const onUploadEscPress = function (evt) {
+  if (evt.key === `Escape`) {
+    evt.preventDefault();
+    closeUpload();
+  }
+};
+
+const openUpload = function () {
+  upload.classList.remove(`hidden`);
+  mainBody.classList.add(`modal-open`);
+
+  document.addEventListener(`keydown`, onUploadEscPress);
+};
+
+const closeUpload = function () {
+  upload.classList.add(`hidden`);
+  mainBody.classList.remove(`modal-open`);
+  document.removeEventListener(`keydown`, onUploadEscPress);
+};
+
+uploadOpen.addEventListener(`click`, function () {
+  openUpload();
+});
+
+uploadOpen.addEventListener(`keydown`, function (evt) {
+  if (evt.key === `Enter`) {
+    openUpload();
+  }
+});
+
+uploadClose.addEventListener(`click`, function () {
+  closeUpload();
+});
+
+uploadClose.addEventListener(`keydown`, function (evt) {
+  if (evt.key === `Enter`) {
+    closeUpload();
+  }
+});
+
+// Ползунок
+
+const saturationToggle = document.querySelector(`.effect-level__pin`);
+saturationToggle.addEventListener(`mouseup`, function () {} )
+
+// Следующий шаг
