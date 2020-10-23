@@ -79,12 +79,12 @@ const getPhotos = function () {
   let photos = [];
   for (let i = 1; i <= PHOTOS_AMOUNT; i++) {
     photos.push(
-      {
-        url: `photos/${i}.jpg`,
-        description: `Фото номер ${i}`,
-        likes: getLikesNumber(),
-        comments: getComments()
-      }
+        {
+          url: `photos/${i}.jpg`,
+          description: `Фото номер ${i}`,
+          likes: getLikesNumber(),
+          comments: getComments()
+        }
     );
   }
   return photos;
@@ -116,7 +116,7 @@ for (let i = 0; i < PHOTOS_AMOUNT; i++) {
 // Приближённая фотография
 
 const mainPicture = document.querySelector(`.big-picture`);
-//mainPicture.classList.remove(`hidden`);
+// mainPicture.classList.remove(`hidden`);
 
 const mainPictureImg = mainPicture.querySelector(`.big-picture__img`);
 mainPictureImg.children[0].src = photosList[0].url;
@@ -218,11 +218,11 @@ uploadClose.addEventListener(`keydown`, function (evt) {
 
 // Хештеги
 
-uploadHashtag.addEventListener(`focus`, function (evt) {
+uploadHashtag.addEventListener(`focus`, function () {
   document.removeEventListener(`keydown`, onUploadEscPress);
 });
 
-uploadHashtag.addEventListener(`blur`, function (evt) {
+uploadHashtag.addEventListener(`blur`, function () {
   document.addEventListener(`keydown`, onUploadEscPress);
 });
 
@@ -250,7 +250,7 @@ const isRightTagFormat = function (hashTags) {
   }
 
   return true;
-}
+};
 
 const checkHashtagsLength = function (hashTags) {
   for (let i = 0; i < hashTags.length; i++) {
@@ -260,7 +260,7 @@ const checkHashtagsLength = function (hashTags) {
   }
 
   return true;
-}
+};
 
 const isUniTag = function (hashTags) {
   const unicHashtagsList = {};
@@ -273,10 +273,7 @@ const isUniTag = function (hashTags) {
   }
 
   return true;
-}
-
-
-
+};
 
 // Редактирование изображения и ограничения, накладываемые на поля: Масштаб
 
@@ -311,7 +308,7 @@ scaleBigger.addEventListener(`click`, function (evt) {
 
 const effectItems = document.querySelectorAll(`.effects__radio`);
 const saturationToggle = document.querySelector(`.effect-level__pin`);
-const saturationValue = document.querySelector(`.effect-level__value`);
+// const saturationValue = document.querySelector(`.effect-level__value`);
 const saturationSlider = document.querySelector(`.effect-level__line`);
 
 for (let i = 0; i < effectItems.length; i++) {
@@ -335,10 +332,10 @@ for (let i = 0; i < effectItems.length; i++) {
       uploadPreviewImage.style.filter = ``;
       uploadPreviewImage.className = ``;
     }
-  })
+  });
 }
 
-saturationToggle.addEventListener(`mouseup`, function (evt) {
+saturationToggle.addEventListener(`mouseup`, function () {
   const percent = saturationToggle.offsetLeft / saturationSlider.offsetWidth;
   switch (uploadPreviewImage.className) {
     case `effects__preview--chrome`:
@@ -359,4 +356,4 @@ saturationToggle.addEventListener(`mouseup`, function (evt) {
     default:
       uploadPreviewImage.style.filter = ``;
   }
-})
+});
