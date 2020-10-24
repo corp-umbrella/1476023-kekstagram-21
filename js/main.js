@@ -127,6 +127,8 @@ mainPictureLikes.textContent = photosList[0].likes;
 const mainPictureComments = mainPicture.querySelector(`.comments-count`);
 mainPictureComments.textContent = photosList[0].comments.length;
 
+const mainPictureClose = mainPicture.querySelector(`.big-picture__cancel`);
+
 // Создание списка комментариев
 
 const commentList = document.querySelector(`.social__comments`);
@@ -174,7 +176,6 @@ mainBody.classList.add(`modal-open`);
 const uploadOpen = document.querySelector(`#upload-file`);
 const upload = document.querySelector(`.img-upload__overlay`);
 const uploadClose = upload.querySelector(`#upload-cancel`);
-const uploadHashtag = upload.querySelector(`.text__hashtags`);
 
 const onUploadEscPress = function (evt) {
   if (evt.key === `Escape`) {
@@ -218,6 +219,8 @@ uploadClose.addEventListener(`keydown`, function (evt) {
 
 // Хештеги
 
+const uploadHashtag = upload.querySelector(`.text__hashtags`);
+
 uploadHashtag.addEventListener(`focus`, function () {
   document.removeEventListener(`keydown`, onUploadEscPress);
 });
@@ -230,7 +233,7 @@ uploadHashtag.addEventListener(`input`, function (evt) {
   const hashTags = evt.target.value.toLowerCase().split(` `);
 
   if (!checkHashtagsLength(hashTags)) {
-    uploadHashtag.setCustomValidity(`Неправильная длина хэштега`);
+    uploadHashtag.setCustomValidity(`Неправильная длина хэштега: минимум 1 символ, максимум 20`);
   } else if (!isUniTag(hashTags)) {
     uploadHashtag.setCustomValidity(`Хэштеги должны быть уникальными`);
   } else if (!isRightTagFormat(hashTags)) {
@@ -254,7 +257,7 @@ const isRightTagFormat = function (hashTags) {
 
 const checkHashtagsLength = function (hashTags) {
   for (let i = 0; i < hashTags.length; i++) {
-    if (hashTags[i].length <= 1 || hashTags[i].length >= 20) {
+    if (hashTags[i].length <= 1 || hashTags[i].length > 20) {
       return false;
     }
   }
@@ -357,3 +360,89 @@ saturationToggle.addEventListener(`mouseup`, function () {
       uploadPreviewImage.style.filter = ``;
   }
 });
+
+// Добавляем возможность просмотра любой фотографии в полноразмерном режиме
+
+const mainPhotos = document.querySelectorAll(`.picture`);
+// const mainPhotosImages = document.querySelectorAll(`.picture__img`);
+
+for (let i = 0; i < mainPhotos.length; i++) {
+  mainPhotos[i].addEventListener(`click`, function () {
+    mainPicture.classList.remove(`hidden`);
+    mainPictureImg.children[0].src = mainPhotos[i].children[0].src;
+    openMainPicture();
+  });
+}
+
+// Добавляем поддержку просмотра любой фотографии в полноразмерном режиме с клавиатуры:
+// Выбранная фотография открывается в полноразмерном режиме при нажатии на клавишу Enter
+// И
+// Код для закрытия окна полноразмерного просмотра по нажатию клавиши Esc и клике по иконке закрытия
+
+const onMainPictureEscPress = function (evt) {
+  if (evt.key === `Escape`) {
+    evt.preventDefault();
+    closeMainPicture();
+  }
+};
+
+const openMainPicture = function () {
+  mainPicture.classList.remove(`hidden`);
+  mainBody.classList.add(`modal-open`);
+
+  document.addEventListener(`keydown`, onMainPictureEscPress);
+};
+
+const closeMainPicture = function () {
+  mainPicture.classList.add(`hidden`);
+  mainBody.classList.remove(`modal-open`);
+  document.removeEventListener(`keydown`, onMainPictureEscPress);
+};
+
+mainPicture.addEventListener(`keydown`, function (evt) {
+  if (evt.key === `Enter`) {
+    openMainPicture();
+  }
+});
+
+mainPictureClose.addEventListener(`click`, function () {
+  closeMainPicture();
+});
+
+mainPictureClose.addEventListener(`keydown`, function (evt) {
+  if (evt.key === `Enter`) {
+    closeMainPicture();
+  }
+});
+
+// Код для валидации комментария при загрузке нового изображения
+
+const uploadComment = upload.querySelector(`.text__description`);
+
+uploadComment.addEventListener(`focus`, function () {
+  document.removeEventListener(`keydown`, onUploadEscPress);
+});
+
+uploadComment.addEventListener(`blur`, function () {
+  document.addEventListener(`keydown`, onUploadEscPress);
+});
+
+uploadComment.addEventListener(`input`, function (evt) {
+  const uploadComments = evt.target.value.toLowerCase().split(` `);
+
+  if (!checkuploadCommentsLength(uploadComments)) {
+    uploadComment.setCustomValidity(`Комментарий должен быть не больше 140 символов`);
+  } else {
+    uploadComment.setCustomValidity(``);
+  }
+});
+
+const checkuploadCommentsLength = function (uploadComments) {
+  for (let i = 0; i < uploadComments.length; i++) {
+    if (uploadComments[i].length > 140) {
+      return false;
+    }
+  }
+
+  return true;
+};
