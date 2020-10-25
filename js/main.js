@@ -79,12 +79,12 @@ const getPhotos = function () {
   let photos = [];
   for (let i = 1; i <= PHOTOS_AMOUNT; i++) {
     photos.push(
-        {
-          url: `photos/${i}.jpg`,
-          description: `Фото номер ${i}`,
-          likes: getLikesNumber(),
-          comments: getComments()
-        }
+      {
+        url: `photos/${i}.jpg`,
+        description: `Фото номер ${i}`,
+        likes: getLikesNumber(),
+        comments: getComments()
+      }
     );
   }
   return photos;
@@ -111,54 +111,110 @@ for (let i = 0; i < PHOTOS_AMOUNT; i++) {
   pictureLikes.textContent = photosList[i].likes;
 
   pictureList.appendChild(clonedElement);
+
+  clonedElement.addEventListener(`click`, function () {
+    showBigPicture(photosList[i]);
+  })
 }
 
 // Приближённая фотография
 
 const mainPicture = document.querySelector(`.big-picture`);
-// mainPicture.classList.remove(`hidden`);
 
-const mainPictureImg = mainPicture.querySelector(`.big-picture__img`);
-mainPictureImg.children[0].src = photosList[0].url;
+const showBigPicture = function (pictureInfo) {
+  mainPicture.classList.remove(`hidden`);
 
-const mainPictureLikes = mainPicture.querySelector(`.likes-count`);
-mainPictureLikes.textContent = photosList[0].likes;
+  const mainPictureImg = mainPicture.querySelector(`.big-picture__img`);
+  mainPictureImg.children[0].src = pictureInfo.url;
 
-const mainPictureComments = mainPicture.querySelector(`.comments-count`);
-mainPictureComments.textContent = photosList[0].comments.length;
+  const mainPictureLikes = mainPicture.querySelector(`.likes-count`);
+  mainPictureLikes.textContent = pictureInfo.likes;
 
-const mainPictureClose = mainPicture.querySelector(`.big-picture__cancel`);
+  const mainPictureComments = mainPicture.querySelector(`.comments-count`);
+  mainPictureComments.textContent = pictureInfo.comments.length;
 
-// Создание списка комментариев
+  // Создание списка комментариев
 
-const commentList = document.querySelector(`.social__comments`);
-commentList.innerHTML = ``;
+  renderComments(pictureInfo.comments);
 
-for (let i = 0; i < photosList[0].comments.length; i++) {
-  const comment = document.createElement(`li`);
-  comment.classList.add(`social__comment`);
-  commentList.appendChild(comment);
+  const mainPictureDescription = mainPicture.querySelector(`.social__caption`);
+  mainPictureDescription.textContent = pictureInfo.description;
 
-  const commentsAvatar = document.createElement(`img`);
-  commentsAvatar.classList.add(`social__picture`);
-  commentsAvatar.src = photosList[0].comments[i].avatar;
-  commentsAvatar.alt = photosList[0].comments[i].name;
-  const avatarWidth = 35;
-  const avatarHeight = avatarWidth;
-  commentsAvatar.width = avatarWidth;
-  commentsAvatar.height = avatarHeight;
-  comment.appendChild(commentsAvatar);
-
-  const commentsText = document.createElement(`p`);
-  commentsText.classList.add(`social__text`);
-  commentsText.textContent = photosList[0].comments[i].message;
-  comment.appendChild(commentsText);
+  openAndCloseBigPicture ();
 }
 
+const renderComments = function (comments) {
+  const commentList = document.querySelector(`.social__comments`);
+  commentList.innerHTML = ``;
 
-const mainPictureDescription = mainPicture.querySelector(`.social__caption`);
-mainPictureDescription.textContent = photosList[0].description;
+  for (let i = 0; i < comments.length; i++) {
+    const comment = document.createElement(`li`);
+    comment.classList.add(`social__comment`);
+    commentList.appendChild(comment);
 
+    const commentsAvatar = document.createElement(`img`);
+    commentsAvatar.classList.add(`social__picture`);
+    commentsAvatar.src = comments[i].avatar;
+    commentsAvatar.alt = comments[i].name;
+    const avatarWidth = 35;
+    const avatarHeight = avatarWidth;
+    commentsAvatar.width = avatarWidth;
+    commentsAvatar.height = avatarHeight;
+    comment.appendChild(commentsAvatar);
+
+    const commentsText = document.createElement(`p`);
+    commentsText.classList.add(`social__text`);
+    commentsText.textContent = comments[i].message;
+    comment.appendChild(commentsText);
+  }
+}
+
+const openAndCloseBigPicture = function () {
+  const mainPhotos = document.querySelectorAll(`.picture`);
+  const mainPictureClose = mainPicture.querySelector(`.big-picture__cancel`);
+
+  for (let i = 0; i < mainPhotos.length; i++) {
+    mainPhotos[i].addEventListener(`click`, function () {
+      openMainPicture();
+    });
+  }
+
+  const onMainPictureEscPress = function (evt) {
+    if (evt.key === `Escape`) {
+      evt.preventDefault();
+      closeMainPicture();
+    }
+  };
+
+  const openMainPicture = function () {
+    mainPicture.classList.remove(`hidden`);
+    mainBody.classList.add(`modal-open`);
+
+    document.addEventListener(`keydown`, onMainPictureEscPress);
+  };
+
+  const closeMainPicture = function () {
+    mainPicture.classList.add(`hidden`);
+    mainBody.classList.remove(`modal-open`);
+    document.removeEventListener(`keydown`, onMainPictureEscPress);
+  };
+
+  mainPicture.addEventListener(`keydown`, function (evt) {
+    if (evt.key === `Enter`) {
+      openMainPicture();
+    }
+  });
+
+  mainPictureClose.addEventListener(`click`, function () {
+    closeMainPicture();
+  });
+
+  mainPictureClose.addEventListener(`keydown`, function (evt) {
+    if (evt.key === `Enter`) {
+      closeMainPicture();
+    }
+  });
+}
 
 const commentsCounter = document.querySelector(`.social__comment-count`);
 commentsCounter.classList.add(`hidden`);
@@ -358,60 +414,6 @@ saturationToggle.addEventListener(`mouseup`, function () {
       break;
     default:
       uploadPreviewImage.style.filter = ``;
-  }
-});
-
-// Добавляем возможность просмотра любой фотографии в полноразмерном режиме
-
-const mainPhotos = document.querySelectorAll(`.picture`);
-// const mainPhotosImages = document.querySelectorAll(`.picture__img`);
-
-for (let i = 0; i < mainPhotos.length; i++) {
-  mainPhotos[i].addEventListener(`click`, function () {
-    mainPicture.classList.remove(`hidden`);
-    mainPictureImg.children[0].src = mainPhotos[i].children[0].src;
-    openMainPicture();
-  });
-}
-
-// Добавляем поддержку просмотра любой фотографии в полноразмерном режиме с клавиатуры:
-// Выбранная фотография открывается в полноразмерном режиме при нажатии на клавишу Enter
-// И
-// Код для закрытия окна полноразмерного просмотра по нажатию клавиши Esc и клике по иконке закрытия
-
-const onMainPictureEscPress = function (evt) {
-  if (evt.key === `Escape`) {
-    evt.preventDefault();
-    closeMainPicture();
-  }
-};
-
-const openMainPicture = function () {
-  mainPicture.classList.remove(`hidden`);
-  mainBody.classList.add(`modal-open`);
-
-  document.addEventListener(`keydown`, onMainPictureEscPress);
-};
-
-const closeMainPicture = function () {
-  mainPicture.classList.add(`hidden`);
-  mainBody.classList.remove(`modal-open`);
-  document.removeEventListener(`keydown`, onMainPictureEscPress);
-};
-
-mainPicture.addEventListener(`keydown`, function (evt) {
-  if (evt.key === `Enter`) {
-    openMainPicture();
-  }
-});
-
-mainPictureClose.addEventListener(`click`, function () {
-  closeMainPicture();
-});
-
-mainPictureClose.addEventListener(`keydown`, function (evt) {
-  if (evt.key === `Enter`) {
-    closeMainPicture();
   }
 });
 
