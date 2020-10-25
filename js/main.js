@@ -78,13 +78,12 @@ const getComments = function () {
 const getPhotos = function () {
   let photos = [];
   for (let i = 1; i <= PHOTOS_AMOUNT; i++) {
-    photos.push(
-      {
-        url: `photos/${i}.jpg`,
-        description: `Фото номер ${i}`,
-        likes: getLikesNumber(),
-        comments: getComments()
-      }
+    photos.push({
+      url: `photos/${i}.jpg`,
+      description: `Фото номер ${i}`,
+      likes: getLikesNumber(),
+      comments: getComments()
+    }
     );
   }
   return photos;
@@ -114,7 +113,7 @@ for (let i = 0; i < PHOTOS_AMOUNT; i++) {
 
   clonedElement.addEventListener(`click`, function () {
     showBigPicture(photosList[i]);
-  })
+  });
 }
 
 // Приближённая фотография
@@ -140,8 +139,8 @@ const showBigPicture = function (pictureInfo) {
   const mainPictureDescription = mainPicture.querySelector(`.social__caption`);
   mainPictureDescription.textContent = pictureInfo.description;
 
-  openAndCloseBigPicture ();
-}
+  openAndCloseBigPicture();
+};
 
 const renderComments = function (comments) {
   const commentList = document.querySelector(`.social__comments`);
@@ -167,7 +166,7 @@ const renderComments = function (comments) {
     commentsText.textContent = comments[i].message;
     comment.appendChild(commentsText);
   }
-}
+};
 
 const openAndCloseBigPicture = function () {
   const mainPhotos = document.querySelectorAll(`.picture`);
@@ -214,7 +213,7 @@ const openAndCloseBigPicture = function () {
       closeMainPicture();
     }
   });
-}
+};
 
 const commentsCounter = document.querySelector(`.social__comment-count`);
 commentsCounter.classList.add(`hidden`);
