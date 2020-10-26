@@ -94,7 +94,31 @@ const photosList = getPhotos();
 const pictureList = document.querySelector(`.pictures`);
 
 const picture = document.querySelector(`#picture`).content;
+
 const pictureElement = picture.querySelector(`.picture`);
+
+const mainPicture = document.querySelector(`.big-picture`);
+
+const mainPictureClose = mainPicture.querySelector(`.big-picture__cancel`);
+
+const onMainPictureEscPress = function (evt) {
+  if (evt.key === `Escape`) {
+    evt.preventDefault();
+    closeMainPicture();
+  }
+};
+
+const openMainPicture = function () {
+  mainPicture.classList.remove(`hidden`);
+  mainBody.classList.add(`modal-open`);
+  document.addEventListener(`keydown`, onMainPictureEscPress);
+};
+
+const closeMainPicture = function () {
+  mainPicture.classList.add(`hidden`);
+  mainBody.classList.remove(`modal-open`);
+  document.removeEventListener(`keydown`, onMainPictureEscPress);
+};
 
 for (let i = 0; i < PHOTOS_AMOUNT; i++) {
   const clonedElement = pictureElement.cloneNode(true);
@@ -113,12 +137,11 @@ for (let i = 0; i < PHOTOS_AMOUNT; i++) {
 
   clonedElement.addEventListener(`click`, function () {
     showBigPicture(photosList[i]);
+    openMainPicture();
   });
 }
 
 // Приближённая фотография
-
-const mainPicture = document.querySelector(`.big-picture`);
 
 const showBigPicture = function (pictureInfo) {
   mainPicture.classList.remove(`hidden`);
@@ -169,35 +192,6 @@ const renderComments = function (comments) {
 };
 
 const openAndCloseBigPicture = function () {
-  const mainPhotos = document.querySelectorAll(`.picture`);
-  const mainPictureClose = mainPicture.querySelector(`.big-picture__cancel`);
-
-  for (let i = 0; i < mainPhotos.length; i++) {
-    mainPhotos[i].addEventListener(`click`, function () {
-      openMainPicture();
-    });
-  }
-
-  const onMainPictureEscPress = function (evt) {
-    if (evt.key === `Escape`) {
-      evt.preventDefault();
-      closeMainPicture();
-    }
-  };
-
-  const openMainPicture = function () {
-    mainPicture.classList.remove(`hidden`);
-    mainBody.classList.add(`modal-open`);
-
-    document.addEventListener(`keydown`, onMainPictureEscPress);
-  };
-
-  const closeMainPicture = function () {
-    mainPicture.classList.add(`hidden`);
-    mainBody.classList.remove(`modal-open`);
-    document.removeEventListener(`keydown`, onMainPictureEscPress);
-  };
-
   mainPicture.addEventListener(`keydown`, function (evt) {
     if (evt.key === `Enter`) {
       openMainPicture();
