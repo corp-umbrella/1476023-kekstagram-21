@@ -108,12 +108,6 @@ const onMainPictureEscPress = function (evt) {
   }
 };
 
-const openMainPicture = function () {
-  mainPicture.classList.remove(`hidden`);
-  mainBody.classList.add(`modal-open`);
-  document.addEventListener(`keydown`, onMainPictureEscPress);
-};
-
 const closeMainPicture = function () {
   mainPicture.classList.add(`hidden`);
   mainBody.classList.remove(`modal-open`);
@@ -137,7 +131,6 @@ for (let i = 0; i < PHOTOS_AMOUNT; i++) {
 
   clonedElement.addEventListener(`click`, function () {
     showBigPicture(photosList[i]);
-    openMainPicture();
   });
 }
 
@@ -145,6 +138,8 @@ for (let i = 0; i < PHOTOS_AMOUNT; i++) {
 
 const showBigPicture = function (pictureInfo) {
   mainPicture.classList.remove(`hidden`);
+  mainBody.classList.add(`modal-open`);
+  document.addEventListener(`keydown`, onMainPictureEscPress);
 
   const mainPictureImg = mainPicture.querySelector(`.big-picture__img`);
   mainPictureImg.children[0].src = pictureInfo.url;
@@ -162,7 +157,15 @@ const showBigPicture = function (pictureInfo) {
   const mainPictureDescription = mainPicture.querySelector(`.social__caption`);
   mainPictureDescription.textContent = pictureInfo.description;
 
-  openAndCloseBigPicture();
+  mainPictureClose.addEventListener(`click`, function () {
+    closeMainPicture();
+  });
+
+  mainPictureClose.addEventListener(`keydown`, function (evt) {
+    if (evt.key === `Enter`) {
+      closeMainPicture();
+    }
+  });
 };
 
 const renderComments = function (comments) {
@@ -189,24 +192,6 @@ const renderComments = function (comments) {
     commentsText.textContent = comments[i].message;
     comment.appendChild(commentsText);
   }
-};
-
-const openAndCloseBigPicture = function () {
-  mainPicture.addEventListener(`keydown`, function (evt) {
-    if (evt.key === `Enter`) {
-      openMainPicture();
-    }
-  });
-
-  mainPictureClose.addEventListener(`click`, function () {
-    closeMainPicture();
-  });
-
-  mainPictureClose.addEventListener(`keydown`, function (evt) {
-    if (evt.key === `Enter`) {
-      closeMainPicture();
-    }
-  });
 };
 
 const commentsCounter = document.querySelector(`.social__comment-count`);
