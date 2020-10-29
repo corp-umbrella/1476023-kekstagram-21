@@ -233,7 +233,12 @@
     <div class="img-upload__message  img-upload__message--loading">Загружаем...</div>
   </template>
 
-  <script src="js/main.js"></script>
+  <script src="js/main.js"></script> <!-- Точка входа. Модуль, который связывает другие модули -->
+  <script src="js/data.js"></script> <!-- Модуль, который создаёт данные -->
+  <script src="js/gallery.js"></script> <!-- Модуль, который работает с галереей изображений; Использует вспомогательные модули -->
+  <script src="js/picture.js"></script> <!-- Модуль для отрисовки миниатюры -->
+  <script src="js/preview.js"></script> <!-- Модуль для отрисовки увеличенного изображения -->
+  <script src="js/form.js"></script> <!-- Модуль, который работает с формой редактирования изображения -->
 
 </body>
 </html>
