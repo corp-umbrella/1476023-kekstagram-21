@@ -31,33 +31,33 @@
   };
 
   const showBigPicture = function (pictureInfo) {
-    window.picture.mainPicture.classList.remove(`hidden`);
-    window.picture.mainBody.classList.add(`modal-open`);
-    document.addEventListener(`keydown`, window.picture.onMainPictureEscPress);
+    window.gallery.mainPicture.classList.remove(`hidden`);
+    window.gallery.mainBody.classList.add(`modal-open`);
+    document.addEventListener(`keydown`, window.gallery.onMainPictureEscPress);
 
-    const mainPictureImg = window.picture.mainPicture.querySelector(`.big-picture__img`);
+    const mainPictureImg = window.gallery.mainPicture.querySelector(`.big-picture__img`);
     mainPictureImg.children[0].src = pictureInfo.url;
 
-    const mainPictureLikes = window.picture.mainPicture.querySelector(`.likes-count`);
+    const mainPictureLikes = window.gallery.mainPicture.querySelector(`.likes-count`);
     mainPictureLikes.textContent = pictureInfo.likes;
 
-    const mainPictureComments = window.picture.mainPicture.querySelector(`.comments-count`);
+    const mainPictureComments = window.gallery.mainPicture.querySelector(`.comments-count`);
     mainPictureComments.textContent = pictureInfo.comments.length;
 
     // Создание списка комментариев
 
     renderComments(pictureInfo.comments);
 
-    const mainPictureDescription = window.picture.mainPicture.querySelector(`.social__caption`);
+    const mainPictureDescription = window.gallery.mainPicture.querySelector(`.social__caption`);
     mainPictureDescription.textContent = pictureInfo.description;
 
-    window.picture.mainPictureClose.addEventListener(`click`, function () {
-      window.picture.closeMainPicture();
+    window.gallery.mainPictureClose.addEventListener(`click`, function () {
+      window.gallery.closeMainPicture();
     });
 
-    window.picture.mainPictureClose.addEventListener(`keydown`, function (evt) {
+    window.gallery.mainPictureClose.addEventListener(`keydown`, function (evt) {
       if (evt.key === `Enter`) {
-        window.picture.closeMainPicture();
+        window.gallery.closeMainPicture();
       }
     });
   };
