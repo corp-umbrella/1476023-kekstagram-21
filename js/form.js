@@ -84,7 +84,6 @@
   const saturationLine = document.querySelector(`.effect-level__depth`);
   // const saturationValue = document.querySelector(`.effect-level__value`);
   const saturationSlider = document.querySelector(`.effect-level__line`);
-  const percent = saturationToggle.offsetLeft / saturationSlider.offsetWidth;
 
   for (let i = 0; i < effectItems.length; i++) {
     effectItems[i].addEventListener(`change`, function (evt) {
@@ -114,8 +113,8 @@
     evt.preventDefault();
     let togglePosition = evt.clientX;
 
-    const onMouseMove = function (evt) {
-      evt.preventDefault();
+    const onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
       const shift = togglePosition - evt.clientX;
       let newPosition = saturationToggle.offsetLeft - shift;
       togglePosition = evt.clientX;
@@ -126,13 +125,16 @@
       } else {
         saturationToggle.style.left = newPosition + `px`;
       }
-    }
+      const percent = saturationToggle.offsetLeft / saturationSlider.offsetWidth;
+      saturationLine.style.width = `${percent * 100}%`;
+    };
 
     document.addEventListener(`mousemove`, onMouseMove);
 
-    const onMouseUp = function (evt) {
-      evt.preventDefault();
+    const onMouseUp = function (moveEvt) {
+      moveEvt.preventDefault();
       document.removeEventListener(`mousemove`, onMouseMove);
+      const percent = saturationToggle.offsetLeft / saturationSlider.offsetWidth;
       switch (uploadPreviewImage.className) {
         case `effects__preview--chrome`:
           uploadPreviewImage.style.filter = `grayscale(${percent})`;
@@ -152,39 +154,9 @@
         default:
           uploadPreviewImage.style.filter = ``;
       }
-    }
+    };
     document.addEventListener(`mouseup`, onMouseUp);
-
-    saturationLine.style.width = `${percent * 100}%`;
   });
-
-
-
-  // вынести отдельно
-  //   document.addEventListener(`mouseup`, function () {
-  //     document.removeEventListener(`mousemove`, onMouseMove);
-  //     const percent = saturationToggle.offsetLeft / saturationSlider.offsetWidth;
-  //     switch (uploadPreviewImage.className) {
-  //       case `effects__preview--chrome`:
-  //         uploadPreviewImage.style.filter = `grayscale(${percent})`;
-  //         break;
-  //       case `effects__preview--sepia`:
-  //         uploadPreviewImage.style.filter = `sepia(${percent})`;
-  //         break;
-  //       case `effects__preview--marvin`:
-  //         uploadPreviewImage.style.filter = `invert(${percent * 100}%)`;
-  //         break;
-  //       case `effects__preview--phobos`:
-  //         uploadPreviewImage.style.filter = `blur(${percent * 3}px)`;
-  //         break;
-  //       case `effects__preview--heat`:
-  //         uploadPreviewImage.style.filter = `brightness(${1 + percent * 2})`;
-  //         break;
-  //       default:
-  //         uploadPreviewImage.style.filter = ``;
-  //     }
-  //   });
-  // })
 
   window.form = {
     upload: upload,
