@@ -125,6 +125,7 @@
       } else {
         saturationToggle.style.left = newPosition + `px`;
       }
+      getEffect();
       const percent = saturationToggle.offsetLeft / saturationSlider.offsetWidth;
       saturationLine.style.width = `${percent * 100}%`;
     };
@@ -134,29 +135,33 @@
     const onMouseUp = function (moveEvt) {
       moveEvt.preventDefault();
       document.removeEventListener(`mousemove`, onMouseMove);
-      const percent = saturationToggle.offsetLeft / saturationSlider.offsetWidth;
-      switch (uploadPreviewImage.className) {
-        case `effects__preview--chrome`:
-          uploadPreviewImage.style.filter = `grayscale(${percent})`;
-          break;
-        case `effects__preview--sepia`:
-          uploadPreviewImage.style.filter = `sepia(${percent})`;
-          break;
-        case `effects__preview--marvin`:
-          uploadPreviewImage.style.filter = `invert(${percent * 100}%)`;
-          break;
-        case `effects__preview--phobos`:
-          uploadPreviewImage.style.filter = `blur(${percent * 3}px)`;
-          break;
-        case `effects__preview--heat`:
-          uploadPreviewImage.style.filter = `brightness(${1 + percent * 2})`;
-          break;
-        default:
-          uploadPreviewImage.style.filter = ``;
-      }
+      getEffect();
     };
     document.addEventListener(`mouseup`, onMouseUp);
   });
+
+  const getEffect = function () {
+    const percent = saturationToggle.offsetLeft / saturationSlider.offsetWidth;
+    switch (uploadPreviewImage.className) {
+      case `effects__preview--chrome`:
+        uploadPreviewImage.style.filter = `grayscale(${percent})`;
+        break;
+      case `effects__preview--sepia`:
+        uploadPreviewImage.style.filter = `sepia(${percent})`;
+        break;
+      case `effects__preview--marvin`:
+        uploadPreviewImage.style.filter = `invert(${percent * 100}%)`;
+        break;
+      case `effects__preview--phobos`:
+        uploadPreviewImage.style.filter = `blur(${percent * 3}px)`;
+        break;
+      case `effects__preview--heat`:
+        uploadPreviewImage.style.filter = `brightness(${1 + percent * 2})`;
+        break;
+      default:
+        uploadPreviewImage.style.filter = ``;
+    }
+  };
 
   window.form = {
     upload: upload,
