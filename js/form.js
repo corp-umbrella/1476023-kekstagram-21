@@ -115,9 +115,9 @@
 
     const onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
-      const shift = togglePosition - evt.clientX;
+      const shift = togglePosition - moveEvt.clientX;
       let newPosition = saturationToggle.offsetLeft - shift;
-      togglePosition = evt.clientX;
+      togglePosition = moveEvt.clientX;
       if (newPosition <= 0) {
         newPosition = 0;
       } else if (newPosition >= saturationSlider.offsetWidth) {
