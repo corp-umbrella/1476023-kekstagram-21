@@ -81,7 +81,6 @@
 
   const effectItems = document.querySelectorAll(`.effects__radio`);
   const saturationToggle = document.querySelector(`.effect-level__pin`);
-  // const saturationValue = document.querySelector(`.effect-level__value`);
   const saturationSlider = document.querySelector(`.effect-level__line`);
 
   for (let i = 0; i < effectItems.length; i++) {

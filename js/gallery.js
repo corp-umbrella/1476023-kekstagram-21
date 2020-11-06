@@ -34,7 +34,6 @@
     const clonedElement = pictureElement.cloneNode(true);
 
     const pictureImage = clonedElement.querySelector(`.picture__img`);
-    // const pictureDescription = clonedElement.querySelector(`.picture__info`);
     const pictureComments = clonedElement.querySelector(`.picture__comments`);
     const pictureLikes = clonedElement.querySelector(`.picture__likes`);
 
