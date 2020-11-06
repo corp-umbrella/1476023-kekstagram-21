@@ -81,6 +81,7 @@
 
   const effectItems = document.querySelectorAll(`.effects__radio`);
   const saturationToggle = document.querySelector(`.effect-level__pin`);
+  const saturationLine = document.querySelector(`.effect-level__depth`);
   // const saturationValue = document.querySelector(`.effect-level__value`);
   const saturationSlider = document.querySelector(`.effect-level__line`);
 
@@ -108,7 +109,38 @@
     });
   }
 
-  saturationToggle.addEventListener(`mouseup`, function () {
+  saturationToggle.addEventListener(`mousedown`, function (evt) {
+    evt.preventDefault();
+    let togglePosition = evt.clientX;
+
+    const onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+      const shift = togglePosition - moveEvt.clientX;
+      let newPosition = saturationToggle.offsetLeft - shift;
+      togglePosition = moveEvt.clientX;
+      if (newPosition <= 0) {
+        newPosition = 0;
+      } else if (newPosition >= saturationSlider.offsetWidth) {
+        newPosition = saturationSlider.offsetWidth;
+      } else {
+        saturationToggle.style.left = newPosition + `px`;
+      }
+      getEffect();
+      const percent = saturationToggle.offsetLeft / saturationSlider.offsetWidth;
+      saturationLine.style.width = `${percent * 100}%`;
+    };
+
+    document.addEventListener(`mousemove`, onMouseMove);
+
+    const onMouseUp = function (moveEvt) {
+      moveEvt.preventDefault();
+      document.removeEventListener(`mousemove`, onMouseMove);
+      getEffect();
+    };
+    document.addEventListener(`mouseup`, onMouseUp);
+  });
+
+  const getEffect = function () {
     const percent = saturationToggle.offsetLeft / saturationSlider.offsetWidth;
     switch (uploadPreviewImage.className) {
       case `effects__preview--chrome`:
@@ -129,7 +161,7 @@
       default:
         uploadPreviewImage.style.filter = ``;
     }
-  });
+  };
 
   window.form = {
     upload: upload,
@@ -137,3 +169,4 @@
   };
 
 })();
+
