@@ -50,12 +50,13 @@
 
     const mainPictureDescription = window.gallery.mainPicture.querySelector(`.social__caption`);
     mainPictureDescription.textContent = pictureInfo.description;
+    const mainPictureClose = window.gallery.mainPicture.querySelector(`.big-picture__cancel`);
 
-    window.gallery.mainPictureClose.addEventListener(`click`, function () {
+    mainPictureClose.addEventListener(`click`, function () {
       window.gallery.closeMainPicture();
     });
 
-    window.gallery.mainPictureClose.addEventListener(`keydown`, function (evt) {
+    mainPictureClose.addEventListener(`keydown`, function (evt) {
       if (evt.key === `Enter`) {
         window.gallery.closeMainPicture();
       }
