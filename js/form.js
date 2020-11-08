@@ -162,6 +162,97 @@
     }
   };
 
+  const form = document.querySelector(`.img-upload__wrapper`);
+
+  const main = document.querySelector(`main`);
+
+  const showSuccess = function () {
+
+    const success = document.querySelector(`#success`).content;
+
+    const clonedSuccess = success.querySelector(`.success`).cloneNode(true);
+
+    // const successInner = clonedSuccess.querySelector(`.success__inner`);
+    // const successTitle = clonedSuccess.querySelector(`.success__title`);
+    const successButton = clonedSuccess.querySelector(`.success__button`);
+
+    main.appendChild(clonedSuccess);
+
+    // clonedSuccess.classList.remove(`hidden`);
+
+    document.addEventListener(`keydown`, onSuccessEscPress);
+
+    const onSuccessEscPress = function (evt) {
+      if (evt.key === `Escape`) {
+        evt.preventDefault();
+        closeSuccess();
+      }
+    };
+
+    const closeSuccess = function () {
+      clonedSuccess.classList.add(`hidden`);
+      document.removeEventListener(`keydown`, onSuccessEscPress);
+    };
+
+    successButton.addEventListener(`click`, function () {
+      closeSuccess();
+    });
+
+    successButton.addEventListener(`keydown`, function (evt) {
+      if (evt.key === `Enter`) {
+        closeSuccess();
+      }
+    });
+
+  };
+
+  const showError = function () {
+
+    const error = document.querySelector(`#error`).content;
+
+    const clonedError = error.querySelector(`.error`).cloneNode(true);
+
+    // const errorInner = clonedError.querySelector(`.error__inner`);
+    // const errorTitle = clonedError.querySelector(`.error__title`);
+    const errorButton = clonedError.querySelector(`.error__button`);
+
+    main.appendChild(clonedError);
+
+    // clonedError.classList.remove(`hidden`);
+
+    document.addEventListener(`keydown`, onErrorEscPress);
+
+    const onErrorEscPress = function (evt) {
+      if (evt.key === `Escape`) {
+        evt.preventDefault();
+        closeError();
+      }
+    };
+
+    const closeError = function () {
+      clonedError.classList.add(`hidden`);
+      document.removeEventListener(`keydown`, onErrorEscPress);
+    };
+
+    errorButton.addEventListener(`click`, function () {
+      closeError();
+    });
+
+    errorButton.addEventListener(`keydown`, function (evt) {
+      if (evt.key === `Enter`) {
+        closeError();
+      }
+    });
+
+  };
+
+  form.addEventListener('submit', function (evt) {
+    window.server.upload(new FormData(form), function (response) {
+      upload.classList.add('hidden');
+    });
+    evt.preventDefault();
+  });
+
   window.form = {
     upload: upload,
     onUploadEscPress: onUploadEscPress
