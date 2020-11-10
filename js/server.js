@@ -51,13 +51,23 @@
     xhr.send();
   };
 
-  const upload = function (data, onSuccess) {
+  const upload = function (data, onSuccess, onError) {
 
-    xhr.addEventListener('load', function () {
+    xhr.addEventListener(`load`, function () {
       onSuccess(xhr.response);
     });
 
-    xhr.open('POST', postURL);
+    xhr.addEventListener(`error`, function () {
+      onError(`Произошла ошибка соединения`);
+    });
+
+    xhr.addEventListener(`timeout`, function () {
+      onError(`Запрос не успел выполниться за ` + xhr.timeout + `мс`);
+    });
+
+    xhr.timeout = 1000;
+
+    xhr.open(`POST`, postURL);
     xhr.send(data);
   };
 

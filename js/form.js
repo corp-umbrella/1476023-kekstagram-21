@@ -162,7 +162,7 @@
     }
   };
 
-  const form = document.querySelector(`.img-upload__wrapper`);
+  const form = document.querySelector(`.img-upload__form`);
 
   const main = document.querySelector(`main`);
 
@@ -180,14 +180,14 @@
 
     // clonedSuccess.classList.remove(`hidden`);
 
-    document.addEventListener(`keydown`, onSuccessEscPress);
-
     const onSuccessEscPress = function (evt) {
       if (evt.key === `Escape`) {
         evt.preventDefault();
         closeSuccess();
       }
     };
+
+    document.addEventListener(`keydown`, onSuccessEscPress);
 
     const closeSuccess = function () {
       clonedSuccess.classList.add(`hidden`);
@@ -220,14 +220,14 @@
 
     // clonedError.classList.remove(`hidden`);
 
-    document.addEventListener(`keydown`, onErrorEscPress);
-
     const onErrorEscPress = function (evt) {
       if (evt.key === `Escape`) {
         evt.preventDefault();
         closeError();
       }
     };
+
+    document.addEventListener(`keydown`, onErrorEscPress);
 
     const closeError = function () {
       clonedError.classList.add(`hidden`);
@@ -246,9 +246,13 @@
 
   };
 
-  form.addEventListener('submit', function (evt) {
-    window.server.upload(new FormData(form), function (response) {
-      upload.classList.add('hidden');
+  form.addEventListener(`submit`, function (evt) {
+    window.server.upload(new FormData(form), function () {
+      upload.classList.add(`hidden`);
+      showSuccess();
+    }, function () {
+      upload.classList.add(`hidden`);
+      showError();
     });
     evt.preventDefault();
   });
