@@ -254,6 +254,7 @@
       upload.classList.add(`hidden`);
       showError();
     });
+    uploadOpen.value = ``;
     evt.preventDefault();
   });
 

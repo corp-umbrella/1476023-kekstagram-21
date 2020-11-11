@@ -8,7 +8,18 @@
   };
 
   const onError = function () {
-    window.server.upload(onError);
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.responseType = `json`;
+
+    xhr.addEventListener(`error`, function () {
+      onError(`Произошла ошибка соединения`);
+    });
+
+    xhr.addEventListener(`timeout`, function () {
+      onError(`Запрос не успел выполниться за ` + xhr.timeout + `мс`);
+    });
   };
 
   window.server.load(onSuccess, onError);
