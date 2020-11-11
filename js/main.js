@@ -7,6 +7,10 @@
     window.gallery.renderPictures(photos);
   };
 
-  window.server.load(onSuccess);
+  const onError = function () {
+    window.server.upload(onError);
+  };
+
+  window.server.load(onSuccess, onError);
 
 })();

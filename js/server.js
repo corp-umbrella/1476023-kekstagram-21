@@ -6,11 +6,11 @@
 
   const postURL = `https://21.javascript.pages.academy/kekstagram`;
 
-  const xhr = new XMLHttpRequest();
-
-  xhr.responseType = `json`;
-
   const load = function (onSuccess, onError) {
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.responseType = `json`;
 
     xhr.addEventListener(`load`, function () {
       let error;
@@ -44,7 +44,7 @@
       onError(`Запрос не успел выполниться за ` + xhr.timeout + `мс`);
     });
 
-    xhr.timeout = 1000;
+    xhr.timeout = 10000;
 
     xhr.open(`GET`, getURL);
 
@@ -52,6 +52,10 @@
   };
 
   const upload = function (data, onSuccess, onError) {
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.responseType = `json`;
 
     xhr.addEventListener(`load`, function () {
       onSuccess(xhr.response);

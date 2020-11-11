@@ -190,7 +190,7 @@
     document.addEventListener(`keydown`, onSuccessEscPress);
 
     const closeSuccess = function () {
-      clonedSuccess.classList.add(`hidden`);
+      clonedSuccess.remove();
       document.removeEventListener(`keydown`, onSuccessEscPress);
     };
 
