@@ -7,6 +7,10 @@
     window.gallery.renderPictures(photos);
   };
 
-  window.server.load(onSuccess);
+  const onError = function () {
+    window.form.showError(`Ошибка загрузки изображений`, `Попробуйте ещё раз`);
+  };
+
+  window.server.load(onSuccess, onError);
 
 })();

@@ -26,6 +26,7 @@
     upload.classList.add(`hidden`);
     window.gallery.mainBody.classList.remove(`modal-open`);
     document.removeEventListener(`keydown`, onUploadEscPress);
+    uploadOpen.value = ``;
   };
 
   uploadOpen.addEventListener(`change`, function () {
@@ -162,9 +163,118 @@
     }
   };
 
+  const form = document.querySelector(`.img-upload__form`);
+
+  const main = document.querySelector(`main`);
+
+  const showSuccess = function () {
+
+    const success = document.querySelector(`#success`).content;
+    const clonedSuccess = success.querySelector(`.success`).cloneNode(true);
+    const successButton = clonedSuccess.querySelector(`.success__button`);
+
+    main.appendChild(clonedSuccess);
+
+    const onSuccessEscPress = function (evt) {
+      if (evt.key === `Escape`) {
+        evt.preventDefault();
+        closeSuccess();
+      }
+    };
+
+    document.addEventListener(`keydown`, onSuccessEscPress);
+
+    const closeSuccess = function () {
+      clonedSuccess.remove();
+      document.removeEventListener(`keydown`, onSuccessEscPress);
+      document.removeEventListener(`click`, function () {
+        closeSuccess();
+      });
+    };
+
+    successButton.addEventListener(`click`, function () {
+      closeSuccess();
+    });
+
+    successButton.addEventListener(`keydown`, function (evt) {
+      if (evt.key === `Enter`) {
+        closeSuccess();
+      }
+    });
+
+    document.addEventListener(`click`, function () {
+      closeSuccess();
+    });
+
+  };
+
+  const showError = function (errorMessage, buttonText) {
+
+    const error = document.querySelector(`#error`).content;
+
+    const clonedError = error.querySelector(`.error`).cloneNode(true);
+    const errorTitle = clonedError.querySelector(`.error__title`);
+    const errorButton = clonedError.querySelector(`.error__button`);
+
+    if (errorMessage) {
+      errorTitle.textContent = errorMessage;
+    }
+
+    if (buttonText) {
+      errorButton.textContent = buttonText;
+    }
+
+    main.appendChild(clonedError);
+
+    const onErrorEscPress = function (evt) {
+      if (evt.key === `Escape`) {
+        evt.preventDefault();
+        closeError();
+      }
+    };
+
+    document.addEventListener(`keydown`, onErrorEscPress);
+
+    const closeError = function () {
+      clonedError.classList.add(`hidden`);
+      document.removeEventListener(`keydown`, onErrorEscPress);
+      document.removeEventListener(`click`, function () {
+        closeError();
+      });
+    };
+
+    errorButton.addEventListener(`click`, function () {
+      closeError();
+    });
+
+    errorButton.addEventListener(`keydown`, function (evt) {
+      if (evt.key === `Enter`) {
+        closeError();
+      }
+    });
+
+    document.addEventListener(`click`, function () {
+      closeError();
+    });
+
+  };
+
+  form.addEventListener(`submit`, function (evt) {
+    window.server.upload(new FormData(form), function () {
+      upload.classList.add(`hidden`);
+      showSuccess();
+    }, function () {
+      upload.classList.add(`hidden`);
+      showError();
+    });
+    uploadOpen.value = ``;
+    evt.preventDefault();
+  });
+
   window.form = {
     upload: upload,
-    onUploadEscPress: onUploadEscPress
+    onUploadEscPress: onUploadEscPress,
+    showError: showError
   };
 
 })();
