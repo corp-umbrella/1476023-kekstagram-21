@@ -8,18 +8,7 @@
   };
 
   const onError = function () {
-
-    let xhr = new XMLHttpRequest();
-
-    xhr.responseType = `json`;
-
-    xhr.addEventListener(`error`, function () {
-      onError(`Произошла ошибка соединения`);
-    });
-
-    xhr.addEventListener(`timeout`, function () {
-      onError(`Запрос не успел выполниться за ` + xhr.timeout + `мс`);
-    });
+    window.form.showError(`Ошибка загрузки изображений`, `Попробуйте ещё раз`);
   };
 
   window.server.load(onSuccess, onError);
