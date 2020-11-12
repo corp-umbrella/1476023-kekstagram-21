@@ -272,9 +272,9 @@
   });
 
   window.form = {
-    upload: upload,
-    onUploadEscPress: onUploadEscPress,
-    showError: showError
+    upload,
+    onUploadEscPress,
+    showError
   };
 
 })();

@@ -70,7 +70,7 @@
   commentsDownload.classList.add(`hidden`);
 
   window.preview = {
-    showBigPicture: showBigPicture
+    showBigPicture
   };
 
 })();
