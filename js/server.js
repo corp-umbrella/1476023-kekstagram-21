@@ -72,8 +72,8 @@
   };
 
   window.server = {
-    load: load,
-    upload: upload
+    load,
+    upload
   };
 
 })();

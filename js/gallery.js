@@ -52,12 +52,20 @@
     pictureList.appendChild(fragment);
   };
 
+  const removeAllPictures = function () {
+    const pictures = pictureList.querySelectorAll(`.picture`);
+    for (let i = 0; i < pictures.length; i++) {
+      pictures[i].remove();
+    }
+  };
+
   window.gallery = {
-    mainPicture: mainPicture,
-    mainBody: mainBody,
-    onMainPictureEscPress: onMainPictureEscPress,
-    closeMainPicture: closeMainPicture,
-    renderPictures: renderPictures
+    mainPicture,
+    mainBody,
+    onMainPictureEscPress,
+    closeMainPicture,
+    renderPictures,
+    removeAllPictures
   };
 
 })();

@@ -2,9 +2,13 @@
 
 (function () {
 
-  const onSuccess = function (photos) {
+  let photos = [];
+
+  const onSuccess = function (data) {
+    photos = data;
     window.data.set(photos);
     window.gallery.renderPictures(photos);
+    window.filter.activateFilters();
   };
 
   const onError = function () {
