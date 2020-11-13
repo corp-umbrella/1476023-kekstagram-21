@@ -2,11 +2,30 @@
 
 (function () {
 
-  // Обработчик на открытие и закрытие загрузки фото
-
   const uploadOpen = document.querySelector(`#upload-file`);
   const upload = document.querySelector(`.img-upload__overlay`);
   const uploadClose = upload.querySelector(`#upload-cancel`);
+
+  const scaleSmaller = document.querySelector(`.scale__control--smaller`);
+  const scaleBigger = document.querySelector(`.scale__control--bigger`);
+  const scaleValue = document.querySelector(`.scale__control--value`);
+  const uploadPreview = document.querySelector(`.img-upload__preview`);
+  const uploadPreviewImage = uploadPreview.querySelector(`img`);
+  const SCALE_VALUE_DEFAULT = 100;
+  const SCALE_VALUE_MIN = 25;
+  const SCALE_VALUE_MAX = 100;
+  const SCALE_STEP = 25;
+
+  const effectItems = document.querySelectorAll(`.effects__radio`);
+  const saturationToggle = document.querySelector(`.effect-level__pin`);
+  const saturationLine = document.querySelector(`.effect-level__depth`);
+  const saturationSlider = document.querySelector(`.effect-level__line`);
+
+  const form = document.querySelector(`.img-upload__form`);
+
+  const main = document.querySelector(`main`);
+
+  // Обработчик на открытие и закрытие загрузки фото
 
   const onUploadEscPress = function (evt) {
     if (evt.key === `Escape`) {
@@ -17,14 +36,14 @@
 
   const openUpload = function () {
     upload.classList.remove(`hidden`);
-    window.gallery.mainBody.classList.add(`modal-open`);
+    window.preview.mainBody.classList.add(`modal-open`);
 
     document.addEventListener(`keydown`, onUploadEscPress);
   };
 
   const closeUpload = function () {
     upload.classList.add(`hidden`);
-    window.gallery.mainBody.classList.remove(`modal-open`);
+    window.preview.mainBody.classList.remove(`modal-open`);
     document.removeEventListener(`keydown`, onUploadEscPress);
     uploadOpen.value = ``;
   };
@@ -51,39 +70,25 @@
 
   // Редактирование изображения и ограничения, накладываемые на поля: Масштаб
 
-  const scaleSmaller = document.querySelector(`.scale__control--smaller`);
-  const scaleBigger = document.querySelector(`.scale__control--bigger`);
-  const scaleValue = document.querySelector(`.scale__control--value`);
-  const uploadPreview = document.querySelector(`.img-upload__preview`);
-  const uploadPreviewImage = uploadPreview.querySelector(`img`);
-  const scaleValueDefault = 100;
-  const scaleValueMin = 25;
-  const scaleValueMax = 100;
-  scaleValue.value = scaleValueDefault;
-  const scaleStep = 25;
+  scaleValue.value = SCALE_VALUE_DEFAULT;
 
   scaleSmaller.addEventListener(`click`, function (evt) {
-    if (scaleValue.value > scaleValueMin && scaleValue.value <= scaleValueMax) {
+    if (scaleValue.value > SCALE_VALUE_MIN && scaleValue.value <= SCALE_VALUE_MAX) {
       evt.preventDefault();
-      scaleValue.value = +scaleValue.value - scaleStep;
+      scaleValue.value = +scaleValue.value - SCALE_STEP;
       uploadPreviewImage.style.transform = `scale(${scaleValue.value / 100})`;
     }
   });
 
   scaleBigger.addEventListener(`click`, function (evt) {
-    if (scaleValue.value >= scaleValueMin && scaleValue.value < scaleValueMax) {
+    if (scaleValue.value >= SCALE_VALUE_MIN && scaleValue.value < SCALE_VALUE_MAX) {
       evt.preventDefault();
-      scaleValue.value = +scaleValue.value + scaleStep;
+      scaleValue.value = +scaleValue.value + SCALE_STEP;
       uploadPreviewImage.style.transform = `scale(${scaleValue.value / 100})`;
     }
   });
 
   // Редактирование изображения и ограничения, накладываемые на поля: Наложение эффекта на изображение
-
-  const effectItems = document.querySelectorAll(`.effects__radio`);
-  const saturationToggle = document.querySelector(`.effect-level__pin`);
-  const saturationLine = document.querySelector(`.effect-level__depth`);
-  const saturationSlider = document.querySelector(`.effect-level__line`);
 
   for (let i = 0; i < effectItems.length; i++) {
     effectItems[i].addEventListener(`change`, function (evt) {
@@ -162,10 +167,6 @@
         uploadPreviewImage.style.filter = ``;
     }
   };
-
-  const form = document.querySelector(`.img-upload__form`);
-
-  const main = document.querySelector(`main`);
 
   const showSuccess = function () {
 

@@ -6,24 +6,6 @@
 
   const picture = document.querySelector(`#picture`).content;
 
-  const mainPicture = document.querySelector(`.big-picture`);
-
-  const mainBody = document.querySelector(`body`);
-  mainBody.classList.add(`modal-open`);
-
-  const onMainPictureEscPress = function (evt) {
-    if (evt.key === `Escape`) {
-      evt.preventDefault();
-      closeMainPicture();
-    }
-  };
-
-  const closeMainPicture = function () {
-    mainPicture.classList.add(`hidden`);
-    mainBody.classList.remove(`modal-open`);
-    document.removeEventListener(`keydown`, onMainPictureEscPress);
-  };
-
   const renderPicture = function (photo) {
     const clonedElement = picture.querySelector(`.picture`).cloneNode(true);
 
@@ -60,10 +42,6 @@
   };
 
   window.gallery = {
-    mainPicture,
-    mainBody,
-    onMainPictureEscPress,
-    closeMainPicture,
     renderPictures,
     removeAllPictures
   };

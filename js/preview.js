@@ -2,11 +2,27 @@
 
 (function () {
 
+  const COMMENTS_PER_CLICK = 5;
+
+  const AVATAR_WIDTH = 35;
+
+  const mainPicture = document.querySelector(`.big-picture`);
+
+  const mainBody = document.querySelector(`body`);
+
+  const commentsCounter = document.querySelector(`.social__comment-count`);
+  commentsCounter.classList.add(`hidden`);
+
   // Приближённая фотография
+
+  const clearCommentsList = function () {
+    const commentList = document.querySelector(`.social__comments`);
+    commentList.innerHTML = ``;
+  };
 
   const renderComments = function (comments) {
     const commentList = document.querySelector(`.social__comments`);
-    commentList.innerHTML = ``;
+    // commentList.innerHTML = ``;
 
     for (let i = 0; i < comments.length; i++) {
       const comment = document.createElement(`li`);
@@ -17,7 +33,7 @@
       commentsAvatar.classList.add(`social__picture`);
       commentsAvatar.src = comments[i].avatar;
       commentsAvatar.alt = comments[i].name;
-      const avatarWidth = 35;
+      const avatarWidth = AVATAR_WIDTH;
       const avatarHeight = avatarWidth;
       commentsAvatar.width = avatarWidth;
       commentsAvatar.height = avatarHeight;
@@ -31,45 +47,79 @@
   };
 
   const showBigPicture = function (pictureInfo) {
-    window.gallery.mainPicture.classList.remove(`hidden`);
-    window.gallery.mainBody.classList.add(`modal-open`);
+    mainPicture.classList.remove(`hidden`);
+    mainBody.classList.add(`modal-open`);
     document.addEventListener(`keydown`, window.gallery.onMainPictureEscPress);
 
-    const mainPictureImg = window.gallery.mainPicture.querySelector(`.big-picture__img`);
+    const mainPictureImg = mainPicture.querySelector(`.big-picture__img`);
     mainPictureImg.children[0].src = pictureInfo.url;
 
-    const mainPictureLikes = window.gallery.mainPicture.querySelector(`.likes-count`);
+    const mainPictureLikes = mainPicture.querySelector(`.likes-count`);
     mainPictureLikes.textContent = pictureInfo.likes;
 
-    const mainPictureComments = window.gallery.mainPicture.querySelector(`.comments-count`);
+    const mainPictureComments = mainPicture.querySelector(`.comments-count`);
     mainPictureComments.textContent = pictureInfo.comments.length;
 
     // Создание списка комментариев
 
-    renderComments(pictureInfo.comments);
+    const commentsLoader = document.querySelector(`.comments-loader`);
 
-    const mainPictureDescription = window.gallery.mainPicture.querySelector(`.social__caption`);
+    let visibleComments = Math.min(COMMENTS_PER_CLICK, pictureInfo.comments.length);
+
+    clearCommentsList();
+
+    renderComments(pictureInfo.comments.slice(0, COMMENTS_PER_CLICK));
+
+    const hideCommentLoader = function () {
+      if (visibleComments >= pictureInfo.comments.length) {
+        commentsLoader.classList.add(`hidden`);
+      }
+    };
+
+    hideCommentLoader();
+
+    const commentsLoaderClickHandler = function () {
+      renderComments(pictureInfo.comments.slice(visibleComments, visibleComments + COMMENTS_PER_CLICK));
+      visibleComments += COMMENTS_PER_CLICK;
+      hideCommentLoader();
+    };
+
+    commentsLoader.addEventListener(`click`, commentsLoaderClickHandler);
+
+    const mainPictureDescription = mainPicture.querySelector(`.social__caption`);
     mainPictureDescription.textContent = pictureInfo.description;
-    const mainPictureClose = window.gallery.mainPicture.querySelector(`.big-picture__cancel`);
+    const mainPictureClose = mainPicture.querySelector(`.big-picture__cancel`);
+
+    const closeMainPicture = function () {
+      mainPicture.classList.add(`hidden`);
+      mainBody.classList.remove(`modal-open`);
+      document.removeEventListener(`keydown`, onMainPictureEscPress);
+      commentsLoader.removeEventListener(`click`, commentsLoaderClickHandler);
+      commentsLoader.classList.remove(`hidden`);
+    };
+
+    const onMainPictureEscPress = function (evt) {
+      if (evt.key === `Escape`) {
+        evt.preventDefault();
+        closeMainPicture();
+      }
+    };
+
+    document.addEventListener(`keydown`, onMainPictureEscPress);
 
     mainPictureClose.addEventListener(`click`, function () {
-      window.gallery.closeMainPicture();
+      closeMainPicture();
     });
 
     mainPictureClose.addEventListener(`keydown`, function (evt) {
       if (evt.key === `Enter`) {
-        window.gallery.closeMainPicture();
+        closeMainPicture();
       }
     });
   };
 
-  const commentsCounter = document.querySelector(`.social__comment-count`);
-  commentsCounter.classList.add(`hidden`);
-
-  const commentsDownload = document.querySelector(`.comments-loader`);
-  commentsDownload.classList.add(`hidden`);
-
   window.preview = {
+    mainBody,
     showBigPicture
   };
 

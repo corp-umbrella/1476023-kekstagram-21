@@ -2,9 +2,17 @@
 
 (function () {
 
-  // Хэштеги
-
   const uploadHashtag = window.form.upload.querySelector(`.text__hashtags`);
+
+  const uploadComment = window.form.upload.querySelector(`.text__description`);
+
+  const HASHTAGS_MAX_NUMBER = 5;
+
+  const HASHTAGS_MAX_LENGTH = 20;
+
+  const COMMENT_MAX_LENGHT = 140;
+
+  // Хэштеги
 
   uploadHashtag.addEventListener(`focus`, function () {
     document.removeEventListener(`keydown`, window.form.onUploadEscPress);
@@ -23,7 +31,7 @@
       uploadHashtag.setCustomValidity(`Хэштеги должны быть уникальными`);
     } else if (!isRightTagFormat(hashTags)) {
       uploadHashtag.setCustomValidity(`Допускаются только теги с # в начале, никаких других символов`);
-    } else if (hashTags.length > 5) {
+    } else if (hashTags.length > HASHTAGS_MAX_NUMBER) {
       uploadHashtag.setCustomValidity(`Можно указать не больше пяти хэштегов`);
     } else {
       uploadHashtag.setCustomValidity(``);
@@ -42,7 +50,7 @@
 
   const checkHashtagsLength = function (hashTags) {
     for (let i = 0; i < hashTags.length; i++) {
-      if (hashTags[i].length <= 1 || hashTags[i].length > 20) {
+      if (hashTags[i].length <= 1 || hashTags[i].length > HASHTAGS_MAX_LENGTH) {
         return false;
       }
     }
@@ -65,8 +73,6 @@
 
   // Код для валидации комментария при загрузке нового изображения
 
-  const uploadComment = window.form.upload.querySelector(`.text__description`);
-
   uploadComment.addEventListener(`focus`, function () {
     document.removeEventListener(`keydown`, window.form.onUploadEscPress);
   });
@@ -87,7 +93,7 @@
 
   const checkuploadCommentsLength = function (uploadComments) {
     for (let i = 0; i < uploadComments.length; i++) {
-      if (uploadComments[i].length > 140) {
+      if (uploadComments[i].length > COMMENT_MAX_LENGHT) {
         return false;
       }
     }
