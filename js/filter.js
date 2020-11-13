@@ -1,6 +1,6 @@
 'use strict';
 
-(function () {
+(() => {
 
   const filter = document.querySelector(`.img-filters`);
 
@@ -14,40 +14,50 @@
 
   const MAX_RANDOM_PHOTOS = 10;
 
-  const activateFilters = function () {
+  const activateFilters = () => {
     filter.classList.remove(`img-filters--inactive`);
   };
 
-  const getRandomData = function (array) {
-    return array.slice().sort(function () {
+  const getRandomData = (array) => {
+
+    return array.slice().sort(() => {
       return Math.random() - 0.5;
     }).slice(0, MAX_RANDOM_PHOTOS);
   };
 
-  const sortCommentedDesc = function (array) {
-    return array.slice().sort(function (a, b) {
+  const sortCommentedDesc = (array) => {
+
+    return array.slice().sort((a, b) => {
       return b.comments.length - a.comments.length;
     });
   };
 
-  const filterPhotos = function (evt) {
+  const filterPhotos = (evt) => {
+
     window.gallery.removeAllPictures();
+
     filter.querySelector(`.img-filters__button--active`).classList.remove(`img-filters__button--active`);
+
     let filteredList = [];
+
     switch (evt.target.id) {
+
       case `filter-default`:
         filterDefault.classList.add(`img-filters__button--active`);
         filteredList = window.data.get();
         break;
+
       case `filter-random`:
         filterRandom.classList.add(`img-filters__button--active`);
         filteredList = getRandomData(window.data.get());
         break;
+
       case `filter-discussed`:
         filterDiscussed.classList.add(`img-filters__button--active`);
         filteredList = sortCommentedDesc(window.data.get());
         break;
     }
+
     window.gallery.renderPictures(filteredList);
   };
 

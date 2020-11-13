@@ -1,6 +1,6 @@
 'use strict';
 
-(function () {
+(() => {
 
   const uploadOpen = document.querySelector(`#upload-file`);
   const upload = document.querySelector(`.img-upload__overlay`);
@@ -27,42 +27,46 @@
 
   // Обработчик на открытие и закрытие загрузки фото
 
-  const onUploadEscPress = function (evt) {
+  const onUploadEscPress = (evt) => {
+
     if (evt.key === `Escape`) {
       evt.preventDefault();
       closeUpload();
     }
   };
 
-  const openUpload = function () {
+  const openUpload = () => {
+
     upload.classList.remove(`hidden`);
     window.preview.mainBody.classList.add(`modal-open`);
-
     document.addEventListener(`keydown`, onUploadEscPress);
   };
 
-  const closeUpload = function () {
+  const closeUpload = () => {
+
     upload.classList.add(`hidden`);
     window.preview.mainBody.classList.remove(`modal-open`);
     document.removeEventListener(`keydown`, onUploadEscPress);
     uploadOpen.value = ``;
   };
 
-  uploadOpen.addEventListener(`change`, function () {
+  uploadOpen.addEventListener(`change`, () => {
     openUpload();
   });
 
-  uploadOpen.addEventListener(`keydown`, function (evt) {
+  uploadOpen.addEventListener(`keydown`, (evt) => {
+
     if (evt.key === `Enter`) {
       openUpload();
     }
   });
 
-  uploadClose.addEventListener(`click`, function () {
+  uploadClose.addEventListener(`click`, () => {
     closeUpload();
   });
 
-  uploadClose.addEventListener(`keydown`, function (evt) {
+  uploadClose.addEventListener(`keydown`, (evt) => {
+
     if (evt.key === `Enter`) {
       closeUpload();
     }
@@ -72,7 +76,8 @@
 
   scaleValue.value = SCALE_VALUE_DEFAULT;
 
-  scaleSmaller.addEventListener(`click`, function (evt) {
+  scaleSmaller.addEventListener(`click`, (evt) => {
+
     if (scaleValue.value > SCALE_VALUE_MIN && scaleValue.value <= SCALE_VALUE_MAX) {
       evt.preventDefault();
       scaleValue.value = +scaleValue.value - SCALE_STEP;
@@ -80,7 +85,8 @@
     }
   });
 
-  scaleBigger.addEventListener(`click`, function (evt) {
+  scaleBigger.addEventListener(`click`, (evt) => {
+
     if (scaleValue.value >= SCALE_VALUE_MIN && scaleValue.value < SCALE_VALUE_MAX) {
       evt.preventDefault();
       scaleValue.value = +scaleValue.value + SCALE_STEP;
@@ -91,7 +97,8 @@
   // Редактирование изображения и ограничения, накладываемые на поля: Наложение эффекта на изображение
 
   for (let i = 0; i < effectItems.length; i++) {
-    effectItems[i].addEventListener(`change`, function (evt) {
+
+    effectItems[i].addEventListener(`change`, (evt) => {
       if (evt.target.value === `chrome`) {
         uploadPreviewImage.style.filter = ``;
         uploadPreviewImage.className = `effects__preview--chrome`;
@@ -114,15 +121,21 @@
     });
   }
 
-  saturationToggle.addEventListener(`mousedown`, function (evt) {
+  saturationToggle.addEventListener(`mousedown`, (evt) => {
+
     evt.preventDefault();
     let togglePosition = evt.clientX;
 
-    const onMouseMove = function (moveEvt) {
+    const onMouseMove = (moveEvt) => {
+
       moveEvt.preventDefault();
+
       const shift = togglePosition - moveEvt.clientX;
+
       let newPosition = saturationToggle.offsetLeft - shift;
+
       togglePosition = moveEvt.clientX;
+
       if (newPosition <= 0) {
         newPosition = 0;
       } else if (newPosition >= saturationSlider.offsetWidth) {
@@ -130,23 +143,30 @@
       } else {
         saturationToggle.style.left = newPosition + `px`;
       }
+
       getEffect();
+
       const percent = saturationToggle.offsetLeft / saturationSlider.offsetWidth;
+
       saturationLine.style.width = `${percent * 100}%`;
     };
 
     document.addEventListener(`mousemove`, onMouseMove);
 
-    const onMouseUp = function (moveEvt) {
+    const onMouseUp = (moveEvt) => {
+
       moveEvt.preventDefault();
       document.removeEventListener(`mousemove`, onMouseMove);
       getEffect();
     };
+
     document.addEventListener(`mouseup`, onMouseUp);
   });
 
-  const getEffect = function () {
+  const getEffect = () => {
+
     const percent = saturationToggle.offsetLeft / saturationSlider.offsetWidth;
+
     switch (uploadPreviewImage.className) {
       case `effects__preview--chrome`:
         uploadPreviewImage.style.filter = `grayscale(${percent})`;
@@ -168,7 +188,7 @@
     }
   };
 
-  const showSuccess = function () {
+  const showSuccess = () => {
 
     const success = document.querySelector(`#success`).content;
     const clonedSuccess = success.querySelector(`.success`).cloneNode(true);
@@ -176,7 +196,7 @@
 
     main.appendChild(clonedSuccess);
 
-    const onSuccessEscPress = function (evt) {
+    const onSuccessEscPress = (evt) => {
       if (evt.key === `Escape`) {
         evt.preventDefault();
         closeSuccess();
@@ -185,31 +205,31 @@
 
     document.addEventListener(`keydown`, onSuccessEscPress);
 
-    const closeSuccess = function () {
+    const closeSuccess = () => {
       clonedSuccess.remove();
       document.removeEventListener(`keydown`, onSuccessEscPress);
-      document.removeEventListener(`click`, function () {
+      document.removeEventListener(`click`, () => {
         closeSuccess();
       });
     };
 
-    successButton.addEventListener(`click`, function () {
+    successButton.addEventListener(`click`, () => {
       closeSuccess();
     });
 
-    successButton.addEventListener(`keydown`, function (evt) {
+    successButton.addEventListener(`keydown`, (evt) => {
       if (evt.key === `Enter`) {
         closeSuccess();
       }
     });
 
-    document.addEventListener(`click`, function () {
+    document.addEventListener(`click`, () => {
       closeSuccess();
     });
 
   };
 
-  const showError = function (errorMessage, buttonText) {
+  const showError = (errorMessage, buttonText) => {
 
     const error = document.querySelector(`#error`).content;
 
@@ -227,7 +247,7 @@
 
     main.appendChild(clonedError);
 
-    const onErrorEscPress = function (evt) {
+    const onErrorEscPress = (evt) => {
       if (evt.key === `Escape`) {
         evt.preventDefault();
         closeError();
@@ -236,39 +256,42 @@
 
     document.addEventListener(`keydown`, onErrorEscPress);
 
-    const closeError = function () {
+    const closeError = () => {
       clonedError.classList.add(`hidden`);
       document.removeEventListener(`keydown`, onErrorEscPress);
-      document.removeEventListener(`click`, function () {
+      document.removeEventListener(`click`, () => {
         closeError();
       });
     };
 
-    errorButton.addEventListener(`click`, function () {
+    errorButton.addEventListener(`click`, () => {
       closeError();
     });
 
-    errorButton.addEventListener(`keydown`, function (evt) {
+    errorButton.addEventListener(`keydown`, (evt) => {
       if (evt.key === `Enter`) {
         closeError();
       }
     });
 
-    document.addEventListener(`click`, function () {
+    document.addEventListener(`click`, () => {
       closeError();
     });
 
   };
 
-  form.addEventListener(`submit`, function (evt) {
-    window.server.upload(new FormData(form), function () {
+  form.addEventListener(`submit`, (evt) => {
+
+    window.server.upload(new FormData(form), () => {
       upload.classList.add(`hidden`);
       showSuccess();
-    }, function () {
+    }, () => {
       upload.classList.add(`hidden`);
       showError();
     });
+
     uploadOpen.value = ``;
+
     evt.preventDefault();
   });
 

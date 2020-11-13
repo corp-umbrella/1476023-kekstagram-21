@@ -1,6 +1,6 @@
 'use strict';
 
-(function () {
+(() => {
 
   const uploadHashtag = window.form.upload.querySelector(`.text__hashtags`);
 
@@ -14,15 +14,16 @@
 
   // Хэштеги
 
-  uploadHashtag.addEventListener(`focus`, function () {
+  uploadHashtag.addEventListener(`focus`, () => {
     document.removeEventListener(`keydown`, window.form.onUploadEscPress);
   });
 
-  uploadHashtag.addEventListener(`blur`, function () {
+  uploadHashtag.addEventListener(`blur`, () => {
     document.addEventListener(`keydown`, window.form.onUploadEscPress);
   });
 
-  uploadHashtag.addEventListener(`input`, function (evt) {
+  uploadHashtag.addEventListener(`input`, (evt) => {
+
     const hashTags = evt.target.value.toLowerCase().split(` `);
 
     if (!checkHashtagsLength(hashTags)) {
@@ -38,7 +39,8 @@
     }
   });
 
-  const isRightTagFormat = function (hashTags) {
+  const isRightTagFormat = (hashTags) => {
+
     for (let i = 0; i < hashTags.length; i++) {
       if (!hashTags[i].match(/^#[0-9a-zа-я]+$/)) {
         return false;
@@ -48,7 +50,8 @@
     return true;
   };
 
-  const checkHashtagsLength = function (hashTags) {
+  const checkHashtagsLength = (hashTags) => {
+
     for (let i = 0; i < hashTags.length; i++) {
       if (hashTags[i].length <= 1 || hashTags[i].length > HASHTAGS_MAX_LENGTH) {
         return false;
@@ -58,8 +61,10 @@
     return true;
   };
 
-  const isUniTag = function (hashTags) {
+  const isUniTag = (hashTags) => {
+
     const unicHashtagsList = {};
+
     for (let i = 0; i < hashTags.length; i++) {
       if (hashTags[i] in unicHashtagsList) {
         return false;
@@ -73,15 +78,16 @@
 
   // Код для валидации комментария при загрузке нового изображения
 
-  uploadComment.addEventListener(`focus`, function () {
+  uploadComment.addEventListener(`focus`, () => {
     document.removeEventListener(`keydown`, window.form.onUploadEscPress);
   });
 
-  uploadComment.addEventListener(`blur`, function () {
+  uploadComment.addEventListener(`blur`, () => {
     document.addEventListener(`keydown`, window.form.onUploadEscPress);
   });
 
-  uploadComment.addEventListener(`input`, function (evt) {
+  uploadComment.addEventListener(`input`, (evt) => {
+
     const uploadComments = evt.target.value.toLowerCase().split(` `);
 
     if (!checkuploadCommentsLength(uploadComments)) {
@@ -91,7 +97,8 @@
     }
   });
 
-  const checkuploadCommentsLength = function (uploadComments) {
+  const checkuploadCommentsLength = (uploadComments) => {
+
     for (let i = 0; i < uploadComments.length; i++) {
       if (uploadComments[i].length > COMMENT_MAX_LENGHT) {
         return false;

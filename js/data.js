@@ -1,14 +1,14 @@
 'use strict';
 
-(function () {
+(() => {
 
   let data = [];
 
-  const getData = function () {
+  const getData = () => {
     return data;
   };
 
-  const setData = function (newData) {
+  const setData = (newData) => {
     data = newData;
   };
 

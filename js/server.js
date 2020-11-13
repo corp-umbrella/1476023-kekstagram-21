@@ -1,19 +1,21 @@
 'use strict';
 
-(function () {
+(() => {
 
   const getURL = `https://21.javascript.pages.academy/kekstagram/data`;
 
   const postURL = `https://21.javascript.pages.academy/kekstagram`;
 
-  const load = function (onSuccess, onError) {
+  const load = (onSuccess, onError) => {
 
     const xhr = new XMLHttpRequest();
 
     xhr.responseType = `json`;
 
-    xhr.addEventListener(`load`, function () {
+    xhr.addEventListener(`load`, () => {
+
       let error;
+
       switch (xhr.status) {
         case 200:
           onSuccess(xhr.response);
@@ -36,11 +38,11 @@
       }
     });
 
-    xhr.addEventListener(`error`, function () {
+    xhr.addEventListener(`error`, () => {
       onError(`Произошла ошибка соединения`);
     });
 
-    xhr.addEventListener(`timeout`, function () {
+    xhr.addEventListener(`timeout`, () => {
       onError(`Запрос не успел выполниться за ` + xhr.timeout + `мс`);
     });
 
@@ -49,25 +51,26 @@
     xhr.send();
   };
 
-  const upload = function (data, onSuccess, onError) {
+  const upload = (data, onSuccess, onError) => {
 
     const xhr = new XMLHttpRequest();
 
     xhr.responseType = `json`;
 
-    xhr.addEventListener(`load`, function () {
+    xhr.addEventListener(`load`, () => {
       onSuccess(xhr.response);
     });
 
-    xhr.addEventListener(`error`, function () {
+    xhr.addEventListener(`error`, () => {
       onError(`Произошла ошибка соединения`);
     });
 
-    xhr.addEventListener(`timeout`, function () {
+    xhr.addEventListener(`timeout`, () => {
       onError(`Запрос не успел выполниться за ` + xhr.timeout + `мс`);
     });
 
     xhr.open(`POST`, postURL);
+
     xhr.send(data);
   };
 

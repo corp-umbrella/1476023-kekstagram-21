@@ -1,17 +1,22 @@
 'use strict';
 
-(function () {
+(() => {
 
   let photos = [];
 
-  const onSuccess = function (data) {
+  const onSuccess = (data) => {
+
     photos = data;
+
     window.data.set(photos);
+
     window.gallery.renderPictures(photos);
+
     window.filter.activateFilters();
   };
 
-  const onError = function () {
+  const onError = () => {
+
     window.form.showError(`Ошибка загрузки изображений`, `Попробуйте ещё раз`);
   };
 
