@@ -6,6 +6,8 @@
 
   const AVATAR_WIDTH = 35;
 
+  const AVATAR_HEIGHT = 35;
+
   const mainPicture = document.querySelector(`.big-picture`);
 
   const mainBody = document.querySelector(`body`);
@@ -35,10 +37,8 @@
       commentsAvatar.classList.add(`social__picture`);
       commentsAvatar.src = comments[i].avatar;
       commentsAvatar.alt = comments[i].name;
-      const avatarWidth = AVATAR_WIDTH;
-      const avatarHeight = avatarWidth;
-      commentsAvatar.width = avatarWidth;
-      commentsAvatar.height = avatarHeight;
+      commentsAvatar.width = AVATAR_WIDTH;
+      commentsAvatar.height = AVATAR_HEIGHT;
       comment.appendChild(commentsAvatar);
 
       const commentsText = document.createElement(`p`);

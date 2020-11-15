@@ -194,6 +194,7 @@
     const clonedSuccess = success.querySelector(`.success`).cloneNode(true);
     const successButton = clonedSuccess.querySelector(`.success__button`);
 
+
     main.appendChild(clonedSuccess);
 
     const onSuccessEscPress = (evt) => {
@@ -226,6 +227,8 @@
     document.addEventListener(`click`, () => {
       closeSuccess();
     });
+
+    upload.reset;
 
   };
 
@@ -291,6 +294,7 @@
     });
 
     uploadOpen.value = ``;
+
 
     evt.preventDefault();
   });

@@ -6,11 +6,23 @@
 
   const postURL = `https://21.javascript.pages.academy/kekstagram`;
 
-  const load = (onSuccess, onError) => {
+  const ERROR_400 = `Неверный запрос`;
 
+  const ERROR_401 = `Пользователь не авторизован`;
+
+  const ERROR_404 = `Ничего не найдено`;
+
+  const ERROR_STATUS = `Cтатус ответа: : `;
+
+  const query = (method, URL, onSuccess, onError, data) => {
     const xhr = new XMLHttpRequest();
 
     xhr.responseType = `json`;
+  }
+
+  const load = () => {
+
+    query(`GET`, getURL);
 
     xhr.addEventListener(`load`, () => {
 
@@ -21,16 +33,16 @@
           onSuccess(xhr.response);
           break;
         case 400:
-          error = `Неверный запрос`;
+          error = ERROR_400;
           break;
         case 401:
-          error = `Пользователь не авторизован`;
+          error = ERROR_401;
           break;
         case 404:
-          error = `Ничего не найдено`;
+          error = ERROR_404;
           break;
         default:
-          error = `Cтатус ответа: : ` + xhr.status + ` ` + xhr.statusText;
+          error = ERROR_STATUS + xhr.status + ` ` + xhr.statusText;
       }
 
       if (error) {
@@ -46,16 +58,14 @@
       onError(`Запрос не успел выполниться за ` + xhr.timeout + `мс`);
     });
 
-    xhr.open(`GET`, getURL);
+    xhr.open();
 
     xhr.send();
   };
 
-  const upload = (data, onSuccess, onError) => {
+  const upload = () => {
 
-    const xhr = new XMLHttpRequest();
-
-    xhr.responseType = `json`;
+    query(`POST`, postURL);
 
     xhr.addEventListener(`load`, () => {
       onSuccess(xhr.response);
@@ -69,7 +79,7 @@
       onError(`Запрос не успел выполниться за ` + xhr.timeout + `мс`);
     });
 
-    xhr.open(`POST`, postURL);
+    xhr.open();
 
     xhr.send(data);
   };
