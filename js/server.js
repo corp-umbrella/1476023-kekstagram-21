@@ -14,15 +14,11 @@
 
   const ERROR_STATUS = `Cтатус ответа: : `;
 
-  const query = (method, URL, onSuccess, onError, data) => {
+  const createXhr = (onSuccess, onError) => {
+
     const xhr = new XMLHttpRequest();
 
     xhr.responseType = `json`;
-  }
-
-  const load = () => {
-
-    query(`GET`, getURL);
 
     xhr.addEventListener(`load`, () => {
 
@@ -58,28 +54,23 @@
       onError(`Запрос не успел выполниться за ` + xhr.timeout + `мс`);
     });
 
-    xhr.open();
+    return xhr;
+  };
+
+  const load = (onSuccess, onError) => {
+
+    const xhr = createXhr(onSuccess, onError);
+
+    xhr.open(`GET`, getURL);
 
     xhr.send();
   };
 
-  const upload = () => {
+  const upload = (data, onSuccess, onError) => {
 
-    query(`POST`, postURL);
+    const xhr = createXhr(onSuccess, onError);
 
-    xhr.addEventListener(`load`, () => {
-      onSuccess(xhr.response);
-    });
-
-    xhr.addEventListener(`error`, () => {
-      onError(`Произошла ошибка соединения`);
-    });
-
-    xhr.addEventListener(`timeout`, () => {
-      onError(`Запрос не успел выполниться за ` + xhr.timeout + `мс`);
-    });
-
-    xhr.open();
+    xhr.open(`POST`, postURL);
 
     xhr.send(data);
   };

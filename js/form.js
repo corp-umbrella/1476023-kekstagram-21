@@ -20,6 +20,7 @@
   const saturationToggle = document.querySelector(`.effect-level__pin`);
   const saturationLine = document.querySelector(`.effect-level__depth`);
   const saturationSlider = document.querySelector(`.effect-level__line`);
+  const effectLevel = document.querySelector(`.img-upload__effect-level`);
 
   const form = document.querySelector(`.img-upload__form`);
 
@@ -40,6 +41,7 @@
     upload.classList.remove(`hidden`);
     window.preview.mainBody.classList.add(`modal-open`);
     document.addEventListener(`keydown`, onUploadEscPress);
+    hideSlider();
   };
 
   const closeUpload = () => {
@@ -48,6 +50,10 @@
     window.preview.mainBody.classList.remove(`modal-open`);
     document.removeEventListener(`keydown`, onUploadEscPress);
     uploadOpen.value = ``;
+    form.reset();
+    uploadPreviewImage.style.filter = ``;
+    uploadPreviewImage.className = ``;
+
   };
 
   uploadOpen.addEventListener(`change`, () => {
@@ -97,8 +103,8 @@
   // Редактирование изображения и ограничения, накладываемые на поля: Наложение эффекта на изображение
 
   for (let i = 0; i < effectItems.length; i++) {
-
     effectItems[i].addEventListener(`change`, (evt) => {
+      hideSlider();
       if (evt.target.value === `chrome`) {
         uploadPreviewImage.style.filter = ``;
         uploadPreviewImage.className = `effects__preview--chrome`;
@@ -118,8 +124,17 @@
         uploadPreviewImage.style.filter = ``;
         uploadPreviewImage.className = ``;
       }
+      getEffect();
     });
   }
+
+  const hideSlider = () => {
+    if (document.querySelector(`#effect-none`).checked) {
+      effectLevel.classList.add(`hidden`);
+    } else {
+      effectLevel.classList.remove(`hidden`);
+    }
+  };
 
   saturationToggle.addEventListener(`mousedown`, (evt) => {
 
@@ -228,7 +243,7 @@
       closeSuccess();
     });
 
-    upload.reset;
+    form.reset();
 
   };
 
@@ -286,10 +301,10 @@
   form.addEventListener(`submit`, (evt) => {
 
     window.server.upload(new FormData(form), () => {
-      upload.classList.add(`hidden`);
+      closeUpload();
       showSuccess();
     }, () => {
-      upload.classList.add(`hidden`);
+      closeUpload();
       showError();
     });
 
